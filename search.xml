@@ -137,35 +137,6 @@
       </tags>
   </entry>
   <entry>
-    <title>鲁班R2010刷入uboot-openwrt-Padavan固件教程</title>
-    <url>/GiteeHexo/2024/06/26/%E9%B2%81%E7%8F%ADR2010%E5%88%B7%E5%85%A5uboot-openwrt-Padavan%E5%9B%BA%E4%BB%B6%E6%95%99%E7%A8%8B/</url>
-    <content><![CDATA[<p><font color='red'><strong>断开网络链接</strong></font></p>
-<p>1.上电，大概在10秒-15秒左右，路由红灯闪烁<br>2.这时候按joy键，2-3下&#x2F;秒,路由变为绿灯快闪，这时候SD卡进入低格模式，千万不要断电<br>3.大概3-4分钟后，路由器会自动重启两次2-3分钟，变成了一个全新的刚出厂路由器。<br>先登入192.168.68.1 设置下密码<br>然后登入<br><a href="http://192.168.68.1/cgi-bin/luci/">http://192.168.68.1/cgi-bin/luci/</a> </p>
-<p>这个地址可以直接进鲁班的openwrt后台</p>
-<p>账号root 密码 你自己设置的路由器密码（或者password）<br>选择system 选择startup<br>如图位置 加入dropbear<br>保存 重新启动。就开通了ssh</p>
-<img src="/GiteeHexo/2024/06/26/%E9%B2%81%E7%8F%ADR2010%E5%88%B7%E5%85%A5uboot-openwrt-Padavan%E5%9B%BA%E4%BB%B6%E6%95%99%E7%A8%8B/210411oleapwkna0hnlkfn.jpeg" class="">
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">若第一步卡住了：</span><br><span class="line">解决方法：</span><br><span class="line">用chrome或者其它chromium内核的浏览器登录上京东云无线宝，按F12进入控制台。</span><br><span class="line">粘贴以下代码并回车执行：</span><br><span class="line">$.ajax(&#123;</span><br><span class="line">url: <span class="string">&#x27;http://&#x27;</span> + $.cookie(<span class="string">&quot;HostAddrIP&quot;</span>) + <span class="string">&#x27;/jdcapi&#x27;</span>,</span><br><span class="line">async: <span class="literal">false</span>,</span><br><span class="line">data: JSON.stringify(&#123;</span><br><span class="line">jsonrpc: <span class="string">&quot;2.0&quot;</span>,</span><br><span class="line"><span class="built_in">id</span>: 1,</span><br><span class="line">method: <span class="string">&quot;call&quot;</span>,</span><br><span class="line">params: [</span><br><span class="line">$.cookie(<span class="string">&quot;sessionid&quot;</span>),</span><br><span class="line"><span class="string">&quot;service&quot;</span>,</span><br><span class="line"><span class="string">&quot;set&quot;</span>,</span><br><span class="line">&#123;</span><br><span class="line"><span class="string">&quot;name&quot;</span>: <span class="string">&quot;dropbear&quot;</span>,</span><br><span class="line"><span class="string">&quot;instances&quot;</span>: &#123;<span class="string">&quot;instance1&quot;</span>: &#123;<span class="string">&quot;command&quot;</span>: [<span class="string">&quot;/usr/sbin/dropbear&quot;</span>]&#125;&#125;</span><br><span class="line">&#125;</span><br><span class="line">]</span><br><span class="line">&#125;),</span><br><span class="line">dataType: <span class="string">&#x27;json&#x27;</span>,</span><br><span class="line"><span class="built_in">type</span>: <span class="string">&#x27;POST&#x27;</span></span><br><span class="line">&#125;)</span><br><span class="line">dropbear已启动，使用任意ssh客户端登录。</span><br><span class="line">用户名root密码就是系统登入密码</span><br><span class="line">如需开机启动，可将dropbear添加到/etc/rc.loca</span><br></pre></td></tr></table></figure>
-
-<p>之后打开ssh工具连接，<br>账号root 密码是自己设置的路由器登入密码</p>
-<p>可以先备份factory分区，命令：dd if&#x3D;&#x2F;dev&#x2F;mtd2 of&#x3D;&#x2F;tmp&#x2F;factory.bin<br>上传boot文件到tmp</p>
-<p>（上传命令：scp &#x2F;path&#x2F;filename username@servername:&#x2F;path）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">username:用户名（例如：root）</span><br><span class="line">servername:连接的ip地址（例如：192.168.68.1）</span><br></pre></td></tr></table></figure>
-
-<p>刷入uboot指令：mtd -r write &#x2F;tmp&#x2F; u-boot-mt7621-68.bin Bootloader</p>
-<img src="/GiteeHexo/2024/06/26/%E9%B2%81%E7%8F%ADR2010%E5%88%B7%E5%85%A5uboot-openwrt-Padavan%E5%9B%BA%E4%BB%B6%E6%95%99%E7%A8%8B/211513p1mw7mzq4y0nnepm.png" class="">
-
-<p>之后拔电按住joy按键不放上电，看到网络显示连接后松开，浏览器打开192.168.68.1，进入uboot上传initramfs固件等待5分钟，重新打开192.168.68.1进入openwrt界面<br>上传sysupgrade固件，默认ip：192.168.68.1 密码：password<br>padavan刷法一样。进入uboot刷写。</p>
-<p>uboot openwrt Padavan 固件 另外添加救砖恢复用的 编程器固件 原厂固件下载地址：链接: <a href="https://pan.baidu.com/s/1mS0aBVWlzkjHGz9F6AYzWg?pwd=fbau">https://pan.baidu.com/s/1mS0aBVWlzkjHGz9F6AYzWg?pwd=fbau</a> 提取码: fbau</p>
-]]></content>
-      <categories>
-        <category>刷机</category>
-      </categories>
-      <tags>
-        <tag>鲁班刷机</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>搭建自己的专属博客</title>
     <url>/GiteeHexo/2024/06/26/%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E4%B8%93%E5%B1%9E%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<blockquote>
@@ -253,6 +224,35 @@
 ]]></content>
       <tags>
         <tag>hexo安装</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>鲁班R2010刷入uboot-openwrt-Padavan固件教程</title>
+    <url>/GiteeHexo/2024/06/26/%E9%B2%81%E7%8F%ADR2010%E5%88%B7%E5%85%A5uboot-openwrt-Padavan%E5%9B%BA%E4%BB%B6%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[<p><font color='red'><strong>断开网络链接</strong></font></p>
+<p>1.上电，大概在10秒-15秒左右，路由红灯闪烁<br>2.这时候按joy键，2-3下&#x2F;秒,路由变为绿灯快闪，这时候SD卡进入低格模式，千万不要断电<br>3.大概3-4分钟后，路由器会自动重启两次2-3分钟，变成了一个全新的刚出厂路由器。<br>先登入192.168.68.1 设置下密码<br>然后登入<br><a href="http://192.168.68.1/cgi-bin/luci/">http://192.168.68.1/cgi-bin/luci/</a> </p>
+<p>这个地址可以直接进鲁班的openwrt后台</p>
+<p>账号root 密码 你自己设置的路由器密码（或者password）<br>选择system 选择startup<br>如图位置 加入dropbear<br>保存 重新启动。就开通了ssh</p>
+<img src="/GiteeHexo/2024/06/26/%E9%B2%81%E7%8F%ADR2010%E5%88%B7%E5%85%A5uboot-openwrt-Padavan%E5%9B%BA%E4%BB%B6%E6%95%99%E7%A8%8B/210411oleapwkna0hnlkfn.jpeg" class="">
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">若第一步卡住了：</span><br><span class="line">解决方法：</span><br><span class="line">用chrome或者其它chromium内核的浏览器登录上京东云无线宝，按F12进入控制台。</span><br><span class="line">粘贴以下代码并回车执行：</span><br><span class="line">$.ajax(&#123;</span><br><span class="line">url: <span class="string">&#x27;http://&#x27;</span> + $.cookie(<span class="string">&quot;HostAddrIP&quot;</span>) + <span class="string">&#x27;/jdcapi&#x27;</span>,</span><br><span class="line">async: <span class="literal">false</span>,</span><br><span class="line">data: JSON.stringify(&#123;</span><br><span class="line">jsonrpc: <span class="string">&quot;2.0&quot;</span>,</span><br><span class="line"><span class="built_in">id</span>: 1,</span><br><span class="line">method: <span class="string">&quot;call&quot;</span>,</span><br><span class="line">params: [</span><br><span class="line">$.cookie(<span class="string">&quot;sessionid&quot;</span>),</span><br><span class="line"><span class="string">&quot;service&quot;</span>,</span><br><span class="line"><span class="string">&quot;set&quot;</span>,</span><br><span class="line">&#123;</span><br><span class="line"><span class="string">&quot;name&quot;</span>: <span class="string">&quot;dropbear&quot;</span>,</span><br><span class="line"><span class="string">&quot;instances&quot;</span>: &#123;<span class="string">&quot;instance1&quot;</span>: &#123;<span class="string">&quot;command&quot;</span>: [<span class="string">&quot;/usr/sbin/dropbear&quot;</span>]&#125;&#125;</span><br><span class="line">&#125;</span><br><span class="line">]</span><br><span class="line">&#125;),</span><br><span class="line">dataType: <span class="string">&#x27;json&#x27;</span>,</span><br><span class="line"><span class="built_in">type</span>: <span class="string">&#x27;POST&#x27;</span></span><br><span class="line">&#125;)</span><br><span class="line">dropbear已启动，使用任意ssh客户端登录。</span><br><span class="line">用户名root密码就是系统登入密码</span><br><span class="line">如需开机启动，可将dropbear添加到/etc/rc.loca</span><br></pre></td></tr></table></figure>
+
+<p>之后打开ssh工具连接，<br>账号root 密码是自己设置的路由器登入密码</p>
+<p>可以先备份factory分区，命令：dd if&#x3D;&#x2F;dev&#x2F;mtd2 of&#x3D;&#x2F;tmp&#x2F;factory.bin<br>上传boot文件到tmp</p>
+<p>（上传命令：scp &#x2F;path&#x2F;filename username@servername:&#x2F;path）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">username:用户名（例如：root）</span><br><span class="line">servername:连接的ip地址（例如：192.168.68.1）</span><br></pre></td></tr></table></figure>
+
+<p>刷入uboot指令：mtd -r write &#x2F;tmp&#x2F; u-boot-mt7621-68.bin Bootloader</p>
+<img src="/GiteeHexo/2024/06/26/%E9%B2%81%E7%8F%ADR2010%E5%88%B7%E5%85%A5uboot-openwrt-Padavan%E5%9B%BA%E4%BB%B6%E6%95%99%E7%A8%8B/211513p1mw7mzq4y0nnepm.png" class="">
+
+<p>之后拔电按住joy按键不放上电，看到网络显示连接后松开，浏览器打开192.168.68.1，进入uboot上传initramfs固件等待5分钟，重新打开192.168.68.1进入openwrt界面<br>上传sysupgrade固件，默认ip：192.168.68.1 密码：password<br>padavan刷法一样。进入uboot刷写。</p>
+<p>uboot openwrt Padavan 固件 另外添加救砖恢复用的 编程器固件 原厂固件下载地址：链接: <a href="https://pan.baidu.com/s/1mS0aBVWlzkjHGz9F6AYzWg?pwd=fbau">https://pan.baidu.com/s/1mS0aBVWlzkjHGz9F6AYzWg?pwd=fbau</a> 提取码: fbau</p>
+]]></content>
+      <categories>
+        <category>刷机</category>
+      </categories>
+      <tags>
+        <tag>鲁班刷机</tag>
       </tags>
   </entry>
 </search>
